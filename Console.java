@@ -8,9 +8,8 @@ public class Console {
     List<Member> members = new ArrayList<>();
 
     public void looping() {
+        Scanner data = new Scanner(System.in);
         while (true) {
-            Scanner data = new Scanner(System.in);
-
             System.out.println("Welcome to the library.");
             System.out.println("1. Add a new book");
             System.out.println("2. Remove a book");
@@ -27,11 +26,10 @@ public class Console {
             switch (option) {
                 case "1":
                     try {
-                        Scanner bookData = new Scanner(System.in);
                         System.out.print(
                             "Enter book details (title, author, ISBN, available): "
                         );
-                        String bookInfo = bookData.nextLine();
+                        String bookInfo = data.nextLine();
                         String[] bookDetails = bookInfo.split(", ");
                         String title = bookDetails[0];
                         String author = bookDetails[1];
@@ -52,107 +50,175 @@ public class Console {
                     break;
                 case "2":
                     try {
-                        Scanner bookNameToDelate = new Scanner(System.in);
                         System.out.println("Enter book name : ");
-                        String bookName = bookNameToDelate.nextLine();
+                        String bookName = data.nextLine();
                         Book bookToRemove = libraryOne.searchForBook(bookName);
-                        libraryOne.removeBook(bookToRemove);
-                        System.out.println(
-                            "\u001B[32mBook removed successfully\u001B[0m"
-                        );
+                        if (bookToRemove != null) {
+                            libraryOne.removeBook(bookToRemove);
+                            System.out.println(
+                                "\u001B[32mBook removed successfully\u001B[0m"
+                            );
+                        } else {
+                            System.out.println(
+                                "\u001B[31mBook not found\u001B[0m"
+                            );
+                        }
                     } catch (Exception e) {
                         System.out.println(
-                            "\u001B[31mCan't remove the book somthing went wrong!\u001B[0m"
+                            "\u001B[31mCan't remove the book, something went wrong!\u001B[0m"
                         );
                     }
                     break;
                 case "3":
                     try {
-                        Scanner bookNameToSeach = new Scanner(System.in);
                         System.out.println("Enter book name : ");
-                        String bookNameToSearch = bookNameToSeach.nextLine();
-                        //fix me it's file anyone null or success
-                        System.out.println(
-                            libraryOne.searchForBook(bookNameToSearch)
+                        String bookNameToSearch = data.nextLine();
+                        Book foundBook = libraryOne.searchForBook(
+                            bookNameToSearch
                         );
-                        System.out.println(
-                            "\u001B[32mBook found successfully\u001B[0m"
-                        );
-                        bookNameToSeach.close();
+                        if (foundBook != null) {
+                            System.out.println(foundBook);
+                            System.out.println(
+                                "\u001B[32mBook found successfully\u001B[0m"
+                            );
+                        } else {
+                            System.out.println(
+                                "\u001B[31mBook not found\u001B[0m"
+                            );
+                        }
                     } catch (Exception e) {
                         System.out.println(
-                            "\u001B[31mCan't find the book somthing went wrong!\u001B[0m"
+                            "\u001B[31mCan't find the book, something went wrong!\u001B[0m"
                         );
                     }
-
                     break;
                 case "4":
-                    Scanner newMember = new Scanner(System.in);
-                    System.out.println(
-                        "Enter the member (name, email, phone-number) : "
-                    );
-                    String memberInfo = newMember.nextLine();
-                    String[] memberInfoArray = memberInfo.split(", ");
-                    String name = memberInfoArray[0];
-                    String email = memberInfoArray[1];
-                    String phoneNumer = memberInfoArray[2];
-                    Member newMember2 = new Member(name, email, phoneNumer);
-                    libraryOne.registerMember(newMember2);
-                    System.out.println(libraryOne);
-                    System.out.println(
-                        "\u001B[32mBook Borrwed successfully\u001B[0m"
-                    );
+                    try {
+                        System.out.println(
+                            "Enter the member (name, email, phone-number) : "
+                        );
+                        String memberInfo = data.nextLine();
+                        String[] memberInfoArray = memberInfo.split(", ");
+                        String name = memberInfoArray[0];
+                        String email = memberInfoArray[1];
+                        String phoneNumber = memberInfoArray[2];
+                        Member newMember = new Member(name, email, phoneNumber);
+                        libraryOne.registerMember(newMember);
+                        System.out.println(
+                            "\u001B[32mThe Member added successfully\u001B[0m"
+                        );
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mCan't add the member, something went wrong!\u001B[0m"
+                        );
+                    }
                     break;
                 case "5":
-                    Scanner dataBookAndMember = new Scanner(System.in);
-                    System.out.println(
-                        "Enter the info (email-of-member, book-title) : "
-                    );
-                    String memberAndBook = dataBookAndMember.nextLine();
-                    String[] memberAndBookArray = memberAndBook.split(", ");
-                    String memberEmail = memberAndBookArray[0];
-                    String bookName = memberAndBookArray[1];
-                    Member ourMember = libraryOne.getMemberInfo(memberEmail);
-                    Book ourBook = libraryOne.searchForBook(bookName);
-                    ourMember.borrowBook(ourBook);
+                    try {
+                        System.out.println(
+                            "Enter the info (email-of-member, book-title) : "
+                        );
+                        String memberAndBook = data.nextLine();
+                        String[] memberAndBookArray = memberAndBook.split(", ");
+                        String memberEmail = memberAndBookArray[0];
+                        String bookName = memberAndBookArray[1];
+                        Member ourMember = libraryOne.getMemberInfo(
+                            memberEmail
+                        );
+                        Book ourBook = libraryOne.searchForBook(bookName);
+                        if (ourMember != null && ourBook != null) {
+                            ourMember.borrowBook(ourBook);
+                            System.out.println(
+                                "\u001B[32mThe book borrowed successfully\u001B[0m"
+                            );
+                        } else {
+                            System.out.println(
+                                "\u001B[31mMember or Book not found\u001B[0m"
+                            );
+                        }
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mCan't borrow the book, something went wrong!\u001B[0m"
+                        );
+                    }
                     break;
                 case "6":
-                    Scanner dataForReturnAbook = new Scanner(System.in);
-                    System.out.println(
-                        "Enter the info (email-of-member, book-title) : "
-                    );
-                    String returnBook = dataForReturnAbook.nextLine();
-                    String[] returnBookArray = returnBook.split(", ");
-                    String returnMemberEmail = returnBookArray[0];
-                    String returnBookName = returnBookArray[1];
-                    Member returnBookMember = libraryOne.getMemberInfo(
-                        returnMemberEmail
-                    );
-                    Book returnBookname = libraryOne.searchForBook(
-                        returnBookName
-                    );
-                    returnBookMember.returnBook(returnBookname);
+                    try {
+                        System.out.println(
+                            "Enter the info (email-of-member, book-title) : "
+                        );
+                        String returnBook = data.nextLine();
+                        String[] returnBookArray = returnBook.split(", ");
+                        String returnMemberEmail = returnBookArray[0];
+                        String returnBookName = returnBookArray[1];
+                        Member returnBookMember = libraryOne.getMemberInfo(
+                            returnMemberEmail
+                        );
+                        Book returnBookname = libraryOne.searchForBook(
+                            returnBookName
+                        );
+                        if (
+                            returnBookMember != null && returnBookname != null
+                        ) {
+                            returnBookMember.returnBook(returnBookname);
+                            System.out.println(
+                                "\u001B[32mThe book returned successfully\u001B[0m"
+                            );
+                        } else {
+                            System.out.println(
+                                "\u001B[31mMember or Book not found\u001B[0m"
+                            );
+                        }
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mCan't return the book, something went wrong!\u001B[0m"
+                        );
+                    }
                     break;
                 case "7":
-                    System.out.println("All Books : ");
-                    for (Book book : libraryOne.getBooks()) {
-                        System.out.println(book);
+                    try {
+                        System.out.println("All Books : ");
+                        for (Book book : libraryOne.getBooks()) {
+                            System.out.println(book);
+                        }
+                        System.out.println(
+                            "\u001B[32mBooks found successfully\u001B[0m"
+                        );
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mSomething went wrong, can't find Books!\u001B[0m"
+                        );
                     }
-
                     break;
                 case "8":
-                    System.out.println("All Members : ");
-                    for (Member member : libraryOne.geteMembers()) {
-                        System.err.println(member);
+                    try {
+                        System.out.println("All Members : ");
+                        for (Member member : libraryOne.getMembers()) {
+                            System.out.println(member);
+                        }
+                        System.out.println(
+                            "\u001B[32mMembers found successfully\u001B[0m"
+                        );
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mSomething went wrong while searching for Members\u001B[0m"
+                        );
                     }
                     break;
-                case "22":
-                    System.out.println(libraryOne);
+                case "99":
+                    try {
+                        System.out.println(libraryOne);
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mNo Library on 99! Oops\u001B[0m"
+                        );
+                    }
                     break;
                 case "9":
                     System.out.println(
                         "Option 9 selected: Exit the application"
                     );
+                    data.close();
                     System.exit(0);
                     break;
                 default:

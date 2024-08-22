@@ -65,7 +65,7 @@ public class Library {
         return books;
     }
 
-    public List<Member> geteMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
