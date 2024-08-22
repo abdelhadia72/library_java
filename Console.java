@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Console {
+
+    Library libraryOne = new Library();
+    List<Member> members = new ArrayList<>();
 
     public void looping() {
         while (true) {
@@ -21,32 +26,128 @@ public class Console {
             String option = data.nextLine();
             switch (option) {
                 case "1":
-                    System.out.println("Option 1 selected: Add a new book");
+                    try {
+                        Scanner bookData = new Scanner(System.in);
+                        System.out.print(
+                            "Enter book details (title, author, ISBN, available): "
+                        );
+                        String bookInfo = bookData.nextLine();
+                        String[] bookDetails = bookInfo.split(", ");
+                        String title = bookDetails[0];
+                        String author = bookDetails[1];
+                        int ISBN = Integer.parseInt(bookDetails[2]);
+                        boolean available = Boolean.parseBoolean(
+                            bookDetails[3]
+                        );
+                        Book newBook = new Book(title, author, ISBN, available);
+                        libraryOne.addBook(newBook);
+                        System.out.println(
+                            "\u001B[32mBook added successfully\u001B[0m"
+                        );
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mSomething went wrong, cannot add book\u001B[0m"
+                        );
+                    }
                     break;
                 case "2":
-                    System.out.println("Option 2 selected: Remove a book");
+                    try {
+                        Scanner bookNameToDelate = new Scanner(System.in);
+                        System.out.println("Enter book name : ");
+                        String bookName = bookNameToDelate.nextLine();
+                        Book bookToRemove = libraryOne.searchForBook(bookName);
+                        libraryOne.removeBook(bookToRemove);
+                        System.out.println(
+                            "\u001B[32mBook removed successfully\u001B[0m"
+                        );
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mCan't remove the book somthing went wrong!\u001B[0m"
+                        );
+                    }
                     break;
                 case "3":
-                    System.out.println("Option 3 selected: Search for a book");
+                    try {
+                        Scanner bookNameToSeach = new Scanner(System.in);
+                        System.out.println("Enter book name : ");
+                        String bookNameToSearch = bookNameToSeach.nextLine();
+                        //fix me it's file anyone null or success
+                        System.out.println(
+                            libraryOne.searchForBook(bookNameToSearch)
+                        );
+                        System.out.println(
+                            "\u001B[32mBook found successfully\u001B[0m"
+                        );
+                        bookNameToSeach.close();
+                    } catch (Exception e) {
+                        System.out.println(
+                            "\u001B[31mCan't find the book somthing went wrong!\u001B[0m"
+                        );
+                    }
+
                     break;
                 case "4":
+                    Scanner newMember = new Scanner(System.in);
                     System.out.println(
-                        "Option 4 selected: Register a new member"
+                        "Enter the member (name, email, phone-number) : "
+                    );
+                    String memberInfo = newMember.nextLine();
+                    String[] memberInfoArray = memberInfo.split(", ");
+                    String name = memberInfoArray[0];
+                    String email = memberInfoArray[1];
+                    String phoneNumer = memberInfoArray[2];
+                    Member newMember2 = new Member(name, email, phoneNumer);
+                    libraryOne.registerMember(newMember2);
+                    System.out.println(libraryOne);
+                    System.out.println(
+                        "\u001B[32mBook Borrwed successfully\u001B[0m"
                     );
                     break;
                 case "5":
-                    System.out.println("Option 5 selected: Borrow a book");
+                    Scanner dataBookAndMember = new Scanner(System.in);
+                    System.out.println(
+                        "Enter the info (email-of-member, book-title) : "
+                    );
+                    String memberAndBook = dataBookAndMember.nextLine();
+                    String[] memberAndBookArray = memberAndBook.split(", ");
+                    String memberEmail = memberAndBookArray[0];
+                    String bookName = memberAndBookArray[1];
+                    Member ourMember = libraryOne.getMemberInfo(memberEmail);
+                    Book ourBook = libraryOne.searchForBook(bookName);
+                    ourMember.borrowBook(ourBook);
                     break;
                 case "6":
-                    System.out.println("Option 6 selected: Return a book");
+                    Scanner dataForReturnAbook = new Scanner(System.in);
+                    System.out.println(
+                        "Enter the info (email-of-member, book-title) : "
+                    );
+                    String returnBook = dataForReturnAbook.nextLine();
+                    String[] returnBookArray = returnBook.split(", ");
+                    String returnMemberEmail = returnBookArray[0];
+                    String returnBookName = returnBookArray[1];
+                    Member returnBookMember = libraryOne.getMemberInfo(
+                        returnMemberEmail
+                    );
+                    Book returnBookname = libraryOne.searchForBook(
+                        returnBookName
+                    );
+                    returnBookMember.returnBook(returnBookname);
                     break;
                 case "7":
-                    System.out.println("Option 7 selected: Display all books");
+                    System.out.println("All Books : ");
+                    for (Book book : libraryOne.getBooks()) {
+                        System.out.println(book);
+                    }
+
                     break;
                 case "8":
-                    System.out.println(
-                        "Option 8 selected: Display all members"
-                    );
+                    System.out.println("All Members : ");
+                    for (Member member : libraryOne.geteMembers()) {
+                        System.err.println(member);
+                    }
+                    break;
+                case "22":
+                    System.out.println(libraryOne);
                     break;
                 case "9":
                     System.out.println(

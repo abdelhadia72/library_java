@@ -18,6 +18,9 @@ public class Main {
         member1.borrowBook(book1);
         member1.borrowBook(book2);
 
+        // return a book
+        member1.returnBook(book1);
+
         Console console = new Console();
         console.looping();
     }

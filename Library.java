@@ -61,6 +61,14 @@ public class Library {
         book.setAvailable(true);
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public List<Member> geteMembers() {
+        return members;
+    }
+
     @Override
     public String toString() {
         return "Library Books " + books + "members" + members + " .";
