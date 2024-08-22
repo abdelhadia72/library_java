@@ -8,6 +8,7 @@ public class Console {
     List<Member> members = new ArrayList<>();
 
     public void looping() {
+        libraryOne.loadFromFile("db.txt");
         Scanner data = new Scanner(System.in);
         while (true) {
             System.out.println("Welcome to the library.");
@@ -218,6 +219,7 @@ public class Console {
                     System.out.println(
                         "Option 9 selected: Exit the application"
                     );
+                    libraryOne.saveToFile("db.txt");
                     data.close();
                     System.exit(0);
                     break;

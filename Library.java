@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,5 +73,34 @@ public class Library {
     @Override
     public String toString() {
         return "Library Books " + books + "members" + members + " .";
+    }
+
+    // Save library data to file
+    public void saveToFile(String filename) {
+        try (
+            ObjectOutputStream out = new ObjectOutputStream(
+                new FileOutputStream(filename)
+            )
+        ) {
+            out.writeObject(new ArrayList<>(books));
+            out.writeObject(new ArrayList<>(members));
+        } catch (IOException e) {
+            System.out.println("Error saving library data: " + e.getMessage());
+        }
+    }
+
+    // Load library data from file
+    @SuppressWarnings("unchecked")
+    public void loadFromFile(String filename) {
+        try (
+            ObjectInputStream in = new ObjectInputStream(
+                new FileInputStream(filename)
+            )
+        ) {
+            books = (List<Book>) in.readObject();
+            members = (List<Member>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading library data: " + e.getMessage());
+        }
     }
 }
